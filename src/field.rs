@@ -70,3 +70,33 @@ impl cmp::PartialEq for Field {
         self.element != rhs.element
     }
 }
+
+
+#[cfg(test)]
+mod tests {
+    use crate::field::Field;
+
+    #[test]
+    fn addition() {
+        let result = Field::new(2) + Field::new(2);
+        assert_eq!(result, Field::new(4));
+    }
+
+    #[test]
+    fn subtraction() {
+        let result = Field::new(3) - Field::new(2);
+        assert_eq!(result, Field::new(1));
+    }
+
+    #[test]
+    fn multiplication() {
+        let result = Field::new(2) * Field::new(3);
+        assert_eq!(result, Field::new(6));
+    }
+
+    #[test]
+    fn division() {
+        let result = Field::new(10) / Field::new(2);
+        assert_eq!(result, Field::new(5));
+    }
+}
