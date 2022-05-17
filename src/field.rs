@@ -20,7 +20,7 @@ impl <const PRIME: u64> Field<PRIME> {
     }
 }
 
-impl ops::Add for Field<PRIME> {
+impl <const PRIME: u64> ops::Add for Field<PRIME> {
     type Output = Self;
 
     fn add(self, rhs: Self) -> Self {
@@ -28,7 +28,7 @@ impl ops::Add for Field<PRIME> {
     }
 }
 
-impl ops::Sub for Field<PRIME> {
+impl <const PRIME: u64> ops::Sub for Field<PRIME> {
     type Output = Self;
 
     fn sub(self, rhs: Self) -> Self {
@@ -37,7 +37,7 @@ impl ops::Sub for Field<PRIME> {
 
 }
 
-impl ops::Mul for Field<PRIME> {
+impl <const PRIME: u64> ops::Mul for Field<PRIME> {
     type Output = Self;
 
     fn mul(self, rhs: Self) -> Self {
@@ -46,7 +46,7 @@ impl ops::Mul for Field<PRIME> {
 }
 
 
-impl ops::Div for Field<PRIME> {
+impl <const PRIME: u64> ops::Div for Field<PRIME> {
     type Output = Self;
 
     fn div(self, rhs: Self) -> Self {
@@ -59,7 +59,7 @@ impl ops::Div for Field<PRIME> {
     }
 }
 
-impl cmp::PartialEq for Field<PRIME> {
+impl <const PRIME: u64> cmp::PartialEq for Field<PRIME> {
     fn eq(&self, rhs: &Self) -> bool {
         self.element == rhs.element
     }
@@ -76,25 +76,25 @@ mod tests {
 
     #[test]
     fn addition() {
-        let result = Field::new(2) + Field::new(2);
+        let result = Field::<10000000007>::new(2) + Field::<10000000007>::new(2);
         assert_eq!(result, Field::new(4));
     }
 
     #[test]
     fn subtraction() {
-        let result = Field::new(3) - Field::new(2);
+        let result = Field::<10000000007>::new(3) - Field::<10000000007>::new(2);
         assert_eq!(result, Field::new(1));
     }
 
     #[test]
     fn multiplication() {
-        let result = Field::new(2) * Field::new(3);
-        assert_eq!(result, Field::new(6));
+        let result = Field::<10000000007>::new(2) * Field::<10000000007>::new(3);
+        assert_eq!(result, Field::<10000000007>::new(6));
     }
 
     #[test]
     fn division() {
-        let result = Field::new(10) / Field::new(2);
-        assert_eq!(result, Field::new(5));
+        let result = Field::<10000000007>::new(10) / Field::<10000000007>::new(2);
+        assert_eq!(result, Field::<10000000007>::new(5));
     }
 }
