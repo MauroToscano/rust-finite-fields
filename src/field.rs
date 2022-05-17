@@ -95,7 +95,7 @@ mod tests {
     }
 
     #[test]
-    fn divition() {
+    fn division() {
         let result = Field::new(10) / Field::new(2);
         assert_eq!(result, Field::new(5));
     }
