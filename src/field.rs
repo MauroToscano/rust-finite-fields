@@ -1,16 +1,14 @@
-/// Finite Fields F_p implementation
+/// Finite Field<const PRIME: u64>s F_p implementation
 ///
 use std::ops;
 use core::cmp;
 
 #[derive(Debug)]
-pub struct Field {
+pub struct Field<const PRIME: u64> {
     element: u64,
 }
 
-const PRIME : u64 = 1000000007;
-
-impl Field {
+impl <const PRIME: u64> Field<PRIME> {
     // TODO: this grows too fast, use modular exponentiation instead
     // TODO 2: change exponent to not cast it to u32
     pub fn pow(base: Self, exponent: u64) -> Self {
@@ -22,7 +20,7 @@ impl Field {
     }
 }
 
-impl ops::Add for Field {
+impl ops::Add for Field<PRIME> {
     type Output = Self;
 
     fn add(self, rhs: Self) -> Self {
@@ -30,7 +28,7 @@ impl ops::Add for Field {
     }
 }
 
-impl ops::Sub for Field {
+impl ops::Sub for Field<PRIME> {
     type Output = Self;
 
     fn sub(self, rhs: Self) -> Self {
@@ -39,7 +37,7 @@ impl ops::Sub for Field {
 
 }
 
-impl ops::Mul for Field {
+impl ops::Mul for Field<PRIME> {
     type Output = Self;
 
     fn mul(self, rhs: Self) -> Self {
@@ -48,7 +46,7 @@ impl ops::Mul for Field {
 }
 
 
-impl ops::Div for Field {
+impl ops::Div for Field<PRIME> {
     type Output = Self;
 
     fn div(self, rhs: Self) -> Self {
@@ -61,7 +59,7 @@ impl ops::Div for Field {
     }
 }
 
-impl cmp::PartialEq for Field {
+impl cmp::PartialEq for Field<PRIME> {
     fn eq(&self, rhs: &Self) -> bool {
         self.element == rhs.element
     }
