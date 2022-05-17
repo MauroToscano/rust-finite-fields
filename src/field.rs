@@ -1,8 +1,10 @@
 /// Finite Fields F_p implementation
 ///
 use std::ops;
+use core::cmp;
 
-struct Field {
+#[derive(Debug)]
+pub struct Field {
     element: u64,
 }
 
@@ -14,43 +16,57 @@ impl Field {
     pub fn pow(base: Self, exponent: u64) -> Field {
         Field { element: u64::pow(base.element, exponent as u32) % PRIME }
     }
-}
 
-impl ops::Add<Field> for Field {
-    type Output = Field;
-
-    fn add(self, rhs: Field) -> Field {
-        Field { element: (self.element + rhs.element) % PRIME }
+    pub fn new(element: u64) -> Field {
+        Field { element: element }
     }
 }
 
-impl ops::Sub<Field> for Field {
-    type Output = Field;
+impl ops::Add for Field {
+    type Output = Self;
 
-    fn sub(self, rhs: Field) -> Field {
-        Field { element: (self.element - rhs.element) % PRIME }
+    fn add(self, rhs: Self) -> Self {
+        Self { element: (self.element + rhs.element) % PRIME }
+    }
+}
+
+impl ops::Sub for Field {
+    type Output = Self;
+
+    fn sub(self, rhs: Self) -> Self {
+        Self { element: (self.element - rhs.element) % PRIME }
     }
 
 }
 
-impl ops::Mul<Field> for Field {
-    type Output = Field;
+impl ops::Mul for Field {
+    type Output = Self;
 
-    fn mul(self, rhs: Field) -> Field {
-        Field { element: (self.element * rhs.element) % PRIME }
+    fn mul(self, rhs: Self) -> Self {
+        Self { element: (self.element * rhs.element) % PRIME }
     }
 }
 
 
-impl ops::Div<Field> for Field {
-    type Output = Field;
+impl ops::Div for Field {
+    type Output = Self;
 
-    fn div(self, rhs: Field) -> Field {
+    fn div(self, rhs: Self) -> Self {
         if rhs.element % PRIME == 0 {
             panic!("Cannot divide by 0");
         }
 
-        let inverse = Field::pow(rhs, PRIME - 2);
+        let inverse = Self::pow(rhs, PRIME - 2);
         self * inverse
+    }
+}
+
+impl cmp::PartialEq for Field {
+    fn eq(&self, rhs: &Self) -> bool {
+        self.element == rhs.element
+    }
+
+    fn ne(&self, rhs: &Self) -> bool {
+        self.element == rhs.element
     }
 }
