@@ -67,6 +67,6 @@ impl cmp::PartialEq for Field {
     }
 
     fn ne(&self, rhs: &Self) -> bool {
-        self.element == rhs.element
+        self.element != rhs.element
     }
 }
