@@ -13,12 +13,12 @@ const PRIME : u64 = 1000000007;
 impl Field {
     // TODO: this grows too fast, use modular exponentiation instead
     // TODO 2: change exponent to not cast it to u32
-    pub fn pow(base: Self, exponent: u64) -> Field {
-        Field { element: u64::pow(base.element, exponent as u32) % PRIME }
+    pub fn pow(base: Self, exponent: u64) -> Self {
+        Self { element: u64::pow(base.element, exponent as u32) % PRIME }
     }
 
-    pub fn new(element: u64) -> Field {
-        Field { element: element }
+    pub fn new(element: u64) -> Self {
+        Self { element: element }
     }
 }
 
