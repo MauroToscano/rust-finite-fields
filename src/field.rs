@@ -1,18 +1,18 @@
-/// Finite Field<const PRIME: u64>s F_p implementation
+/// Finite Field<const ORDER: u64>s F_p implementation
 ///
 use std::ops;
 use core::cmp;
 
 #[derive(Debug)]
-pub struct Field<const PRIME: u64> {
+pub struct Field<const ORDER: u64> {
     element: u64,
 }
 
-impl <const PRIME: u64> Field<PRIME> {
+impl <const ORDER: u64> Field<ORDER> {
     // TODO: this grows too fast, use modular exponentiation instead
     // TODO 2: change exponent to not cast it to u32
     pub fn pow(base: Self, exponent: u64) -> Self {
-        Self { element: u64::pow(base.element, exponent as u32) % PRIME }
+        Self { element: u64::pow(base.element, exponent as u32) % ORDER }
     }
 
     pub fn new(element: u64) -> Self {
@@ -20,46 +20,46 @@ impl <const PRIME: u64> Field<PRIME> {
     }
 }
 
-impl <const PRIME: u64> ops::Add for Field<PRIME> {
+impl <const ORDER: u64> ops::Add for Field<ORDER> {
     type Output = Self;
 
     fn add(self, rhs: Self) -> Self {
-        Self { element: (self.element + rhs.element) % PRIME }
+        Self { element: (self.element + rhs.element) % ORDER }
     }
 }
 
-impl <const PRIME: u64> ops::Sub for Field<PRIME> {
+impl <const ORDER: u64> ops::Sub for Field<ORDER> {
     type Output = Self;
 
     fn sub(self, rhs: Self) -> Self {
-        Self { element: (self.element - rhs.element) % PRIME }
+        Self { element: (self.element - rhs.element) % ORDER }
     }
 
 }
 
-impl <const PRIME: u64> ops::Mul for Field<PRIME> {
+impl <const ORDER: u64> ops::Mul for Field<ORDER> {
     type Output = Self;
 
     fn mul(self, rhs: Self) -> Self {
-        Self { element: (self.element * rhs.element) % PRIME }
+        Self { element: (self.element * rhs.element) % ORDER }
     }
 }
 
 
-impl <const PRIME: u64> ops::Div for Field<PRIME> {
+impl <const ORDER: u64> ops::Div for Field<ORDER> {
     type Output = Self;
 
     fn div(self, rhs: Self) -> Self {
-        if rhs.element % PRIME == 0 {
+        if rhs.element % ORDER == 0 {
             panic!("Cannot divide by 0");
         }
 
-        let inverse = Self::pow(rhs, PRIME - 2);
+        let inverse = Self::pow(rhs, ORDER - 2);
         self * inverse
     }
 }
 
-impl <const PRIME: u64> cmp::PartialEq for Field<PRIME> {
+impl <const ORDER: u64> cmp::PartialEq for Field<ORDER> {
     fn eq(&self, rhs: &Self) -> bool {
         self.element == rhs.element
     }
