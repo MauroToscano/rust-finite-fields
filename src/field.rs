@@ -74,27 +74,28 @@ impl <const PRIME: u64> cmp::PartialEq for Field<PRIME> {
 mod tests {
     use crate::field::Field;
 
+    const ORDER: u64 = 10000000007;
     #[test]
     fn addition() {
-        let result = Field::<10000000007>::new(2) + Field::<10000000007>::new(2);
-        assert_eq!(result, Field::new(4));
+        let result = Field::<ORDER>::new(2) + Field::<ORDER>::new(2);
+        assert_eq!(result, Field::<ORDER>::new(4));
     }
 
     #[test]
     fn subtraction() {
-        let result = Field::<10000000007>::new(3) - Field::<10000000007>::new(2);
-        assert_eq!(result, Field::new(1));
+        let result = Field::<ORDER>::new(3) - Field::<ORDER>::new(2);
+        assert_eq!(result, Field::<ORDER>::new(1));
     }
 
     #[test]
     fn multiplication() {
-        let result = Field::<10000000007>::new(2) * Field::<10000000007>::new(3);
-        assert_eq!(result, Field::<10000000007>::new(6));
+        let result = Field::<ORDER>::new(2) * Field::<ORDER>::new(3);
+        assert_eq!(result, Field::<ORDER>::new(6));
     }
 
     #[test]
     fn division() {
-        let result = Field::<10000000007>::new(10) / Field::<10000000007>::new(2);
-        assert_eq!(result, Field::<10000000007>::new(5));
+        let result = Field::<ORDER>::new(10) / Field::<ORDER>::new(2);
+        assert_eq!(result, Field::<ORDER>::new(5));
     }
 }
