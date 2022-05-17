@@ -4,6 +4,7 @@ use std::ops;
 use core::cmp;
 
 /* Iterative Function to calculate (base^exponent)%modulo in O(log exponent) */
+// Taken from https://www.geeksforgeeks.org/modular-exponentiation-power-in-modular-arithmetic/
 pub fn mod_pow(mut base: u64, mut exponent: u64, modulo: u64) -> u64
 {
     let mut res = 1;
@@ -27,7 +28,7 @@ pub struct Field {
     element: u64,
 }
 
-const PRIME : u64 = 1000000007;
+pub const PRIME : u64 = 1000000007;
 
 impl Field {
     // TODO 2: change exponent to not cast it to u32
@@ -96,6 +97,7 @@ impl cmp::PartialEq for Field {
 #[cfg(test)]
 mod tests {
     use crate::field::Field;
+    use super::PRIME;
 
     #[test]
     fn addition() {
@@ -119,5 +121,12 @@ mod tests {
     fn division() {
         let result = Field::new(10) / Field::new(2);
         assert_eq!(result, Field::new(5));
+    }
+
+    #[test]
+    fn inverse_using_pow() {
+        let inverse = Field::pow(Field::new(10), (PRIME - 2) as i64);
+        let result = Field::new(10) * inverse;
+        assert_eq!(result, Field::new(1));
     }
 }
