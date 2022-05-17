@@ -36,7 +36,7 @@ impl <const ORDER: u64> Field<ORDER> {
             exponent += (ORDER - 1) as i64;
         }
         Field { element: mod_pow(base.element, exponent as u64, ORDER) }
-    }
+   }
 
     pub fn new(element: u64) -> Self {
         Self { element: element }
