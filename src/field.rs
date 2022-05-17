@@ -2,6 +2,27 @@
 ///
 use std::ops;
 
+#[inline]
+/* Iterative Function to calculate (base^exponent)%modulo in O(log exponent) */
+pub fn mod_pow(mut base: u64, mut exponent: u64, modulo: u64) -> u64
+{
+    let mut res = 1;
+ 
+    base = base % modulo; 
+  
+    if base == 0 { return 0; }
+ 
+    while exponent > 0
+    {
+        if exponent & 1 != 0 { res = (res*base) % modulo; }
+ 
+        exponent = exponent>>1;
+        base = (base*base) % modulo;
+    }
+    res
+}
+
+#[derive(Debug, Clone, Copy)]
 struct Field {
     element: u64,
 }
@@ -9,10 +30,12 @@ struct Field {
 const PRIME : u64 = 1000000007;
 
 impl Field {
-    // TODO: this grows too fast, use modular exponentiation instead
     // TODO 2: change exponent to not cast it to u32
-    pub fn pow(base: Self, exponent: u64) -> Field {
-        Field { element: u64::pow(base.element, exponent as u32) % PRIME }
+    pub fn pow(base: Self, mut exponent: i64) -> Field {
+        while exponent < 0 {
+            exponent += (PRIME - 1) as i64;
+        }
+        Field { element: mod_pow(base.element, exponent as u64, PRIME) }
     }
 }
 
@@ -50,7 +73,7 @@ impl ops::Div<Field> for Field {
             panic!("Cannot divide by 0");
         }
 
-        let inverse = Field::pow(rhs, PRIME - 2);
+        let inverse = Field::pow(rhs, -1);
         self * inverse
     }
 }
