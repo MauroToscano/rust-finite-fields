@@ -5,7 +5,7 @@ use core::cmp;
 
 /* Iterative Function to calculate (base^exponent)%modulo in O(log exponent) */
 // Taken from https://www.geeksforgeeks.org/modular-exponentiation-power-in-modular-arithmetic/
-pub fn mod_pow(mut base: u64, mut exponent: u64, modulo: u64) -> u64
+pub fn mod_pow(mut base: u128, mut exponent: u128, modulo: u128) -> u128
 {
     let mut res = 1;
  
@@ -24,26 +24,25 @@ pub fn mod_pow(mut base: u64, mut exponent: u64, modulo: u64) -> u64
 }
 
 #[derive(Debug, Copy, Clone)]
-pub struct Field<const ORDER: u64> {
-    element: u64,
+pub struct Field<const ORDER: u128> {
+    element: u128,
 }
 
 
-impl <const ORDER: u64> Field<ORDER> {
-    // TODO 2: change exponent to not cast it to u32
-    pub fn pow(base: Self, mut exponent: i64) -> Self {
+impl <const ORDER: u128> Field<ORDER> {
+    pub fn pow(base: Self, mut exponent: i128) -> Self {
         while exponent < 0 {
-            exponent += (ORDER - 1) as i64;
+            exponent += (ORDER - 1) as i128;
         }
-        Field { element: mod_pow(base.element, exponent as u64, ORDER) }
+        Field { element: mod_pow(base.element, exponent as u128, ORDER) }
    }
 
-    pub fn new(element: u64) -> Self {
+    pub fn new(element: u128) -> Self {
         Self { element: element }
     }
 }
 
-impl <const ORDER: u64> ops::Add for Field<ORDER> {
+impl <const ORDER: u128> ops::Add for Field<ORDER> {
     type Output = Self;
 
     fn add(self, rhs: Self) -> Self {
@@ -51,7 +50,7 @@ impl <const ORDER: u64> ops::Add for Field<ORDER> {
     }
 }
 
-impl <const ORDER: u64> ops::Sub for Field<ORDER> {
+impl <const ORDER: u128> ops::Sub for Field<ORDER> {
     type Output = Self;
 
     fn sub(self, rhs: Self) -> Self {
@@ -60,7 +59,7 @@ impl <const ORDER: u64> ops::Sub for Field<ORDER> {
 
 }
 
-impl <const ORDER: u64> ops::Mul for Field<ORDER> {
+impl <const ORDER: u128> ops::Mul for Field<ORDER> {
     type Output = Self;
 
     fn mul(self, rhs: Self) -> Self {
@@ -69,7 +68,7 @@ impl <const ORDER: u64> ops::Mul for Field<ORDER> {
 }
 
 
-impl <const ORDER: u64> ops::Div for Field<ORDER> {
+impl <const ORDER: u128> ops::Div for Field<ORDER> {
     type Output = Self;
 
     fn div(self, rhs: Self) -> Self {
@@ -82,7 +81,7 @@ impl <const ORDER: u64> ops::Div for Field<ORDER> {
     }
 }
 
-impl <const ORDER: u64> cmp::PartialEq for Field<ORDER> {
+impl <const ORDER: u128> cmp::PartialEq for Field<ORDER> {
     fn eq(&self, rhs: &Self) -> bool {
         self.element == rhs.element
     }
@@ -97,7 +96,7 @@ impl <const ORDER: u64> cmp::PartialEq for Field<ORDER> {
 mod tests {
     use crate::field::Field;
 
-    const ORDER: u64 = 1000000007;
+    const ORDER: u128 = 1000000007;
     type TestField = Field::<ORDER>;
     #[test]
     fn addition() {
@@ -125,7 +124,7 @@ mod tests {
 
     #[test]
     fn inverse_using_pow() {
-        let inverse = TestField::pow(TestField::new(10), (ORDER - 2) as i64);
+        let inverse = TestField::pow(TestField::new(10), (ORDER - 2) as i128);
         let result = TestField::new(10) * inverse;
         assert_eq!(result, TestField::new(1));
     }
