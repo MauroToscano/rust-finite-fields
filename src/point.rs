@@ -2,6 +2,7 @@
 ///
 use std::ops;
 
+// TODO: change i128 for a generic implementing prime field
 #[derive(Debug, Copy, Clone)]
 pub enum Point<const A: i128, const B: i128> {
     Infinity,
@@ -25,24 +26,27 @@ impl<const A: i128, const B: i128> ops::Add for Point<A, B> {
             (Self::Infinity, Self::Infinity) => self.clone(),
             (Self::Infinity, Self::Finite { .. }) => other.clone(),
             (Self::Finite { .. }, Self::Infinity) => self.clone(),
-            (Self::Finite { x: x1, y: y1 }, Self::Finite { x: x2, y: y2 }) => {
-                if x1 == x2 && y1 == y2 {
-                    if y1 == 0 {
-                        Self::Infinity
-                    } else {
-                        let s = (3 * (x1 * x1) + A) / (2 * y1);
-                        let x3 = (s * s) - (2 * x1);
-                        let y3 = (s * (x1 - x3)) - y1;
-                        Self::new(x3, y3)
-                    }
-                } else if x1 == x2 && y1 != y2 {
+            (Self::Finite { x: x1, y: y1 }, 
+             Self::Finite { x: x2, y: y2 }) if x1 == x2 && y1 == y2 => {
+                if y1 == 0 {
                     Self::Infinity
                 } else {
-                    let s = (y2 - y1) / (x2 - x1);
-                    let x3 = (s * s) - x1 - x2;
+                    let s = (3 * (x1 * x1) + A) / (2 * y1);
+                    let x3 = (s * s) - (2 * x1);
                     let y3 = (s * (x1 - x3)) - y1;
                     Self::new(x3, y3)
                 }
+            }
+            (Self::Finite { x: x1, y: y1 }, 
+             Self::Finite { x: x2, y: y2 }) if x1 == x2 && y1 != y2 => {
+                    Self::Infinity
+             }
+            (Self::Finite { x: x1, y: y1 }, 
+             Self::Finite { x: x2, y: y2 }) => {
+                let s = (y2 - y1) / (x2 - x1);
+                let x3 = (s * s) - x1 - x2;
+                let y3 = (s * (x1 - x3)) - y1;
+                Self::new(x3, y3)
             }
         }
     }
